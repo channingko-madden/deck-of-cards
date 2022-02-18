@@ -1,0 +1,29 @@
+This file contains explanations for the decisions I made for completing this Deck of Cards problem.
+
+Deck:
+One requirement of the problem is for a class to contain a shuffle() method and deal_card() method.
+I created the Deck class to have these methods. The deck.h header file is documented with what the class represents and choices I made for the class. 
+
+I wanted the Deck class to be generic beyond just containing playing cards, which is why I decided it to make it a template class so it can be reused to contain and shuffle various types of data.
+
+The Deck class seeds a Mersenne Twister psuedo-random generator when instantiated. This psuedo-random generator is used by the knuthShuffle function for shuffling the deck. I removed Deck's copy constructor and copy assignment so that users cannot create copies of decks that contain the same seeded random number generator, to prevent multiple deck existing that could produce the same shuffle results.
+
+I decided that the deal_card() method will throw an exception if the Deck is empty, rather than have undefined behavior. Because I provide a size() and empty() method for the user to check if a Deck is empty before calling deal_card(), I felt it was appropriate to throw an exception to inform the user of their error. I like to follow the principle that bugs should fail spectacularly, so I did not want to hide the fact from the user that they are calling a method when they should not be.
+
+I chose to not hide the knuthShuffle function within the Deck class so that it can be reused by other code in the future. I wrote a test script (knuth_shuffle_test.cpp) to test this function.
+
+
+
+
+PlayingCard:
+To model a standard 52-card deck playing card, I created the PlayingCard class. The playing_card.h file is documented with what the class represents and choices I made for the class.
+
+Due to the fact that different card games have rules that treat playing cards differently, those games would have to implement their own methods for comparing cards or adding card values, therefore I did not implement any for this class. I decided PlayingCard would simpy have a Suite and Rank represented by an enum. Since a playing card is not not allowed to change its suite or rank, there are no public methods of PlayingCard that allow the user to change them.
+
+I decided to not create a base "card" class at this time because cards across various card games share little in common (a standard poker-style playing card is very different from a Yu-Gi-Oh card), and it was not necessary in order to address the prompt. Furthermore, since the Deck class is already generic, a Base class is not needed for the Deck class to work with any new card class in the future.
+
+I created a test script (shuffle_deal_test.cpp) that creates a Deck of 52 PlayingCards, shuffles it, and deals them out.
+
+
+WarCardGame:
+I wanted to show how I intended these two classes to be used, so I created the WarCardGame class (war_card_game.h) which uses the Deck and PlayingCard classes to run a game of the War card game, with the results of each turn printed to standard out. I wrote a test script (war_card_game_test.cpp) for this.
