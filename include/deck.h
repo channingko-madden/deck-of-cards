@@ -12,6 +12,8 @@
 #define DECK_H
 
 #include <vector>
+#include <algorithm> // for std::swap
+#include <random>
 
 /**
  * @brief "Deck of Cards" namespace
@@ -22,10 +24,19 @@ namespace doc
 /**
  * @brief Implementation of Knuth Shuffle algorithm, also known as Fisher-Yates shuffle.
  * See https://en.wikipedia.org/wiki/Fisher-Yates_shuffle for background.
+ *
+ * @param[in] data Datat to shuffle
+ * @param[in] randomGenerator 32-bit Mersenne Twister algorithm for generating random numbers.
+ *  It is assumed this generator has been seeded appropriately.
  */
 template <class T>
-void knuthShuffle(std::vector<T>& data)
+void knuthShuffle(std::vector<T>& data, std::mt19937& randomGenerator)
 {
+    std::uniform_int_distribution<unsigned long long> dist(0, data.size() - 1); // dist is range [a, size-1]
+    for (auto& point : data)
+    {
+        std::swap(point, data.at(dist(randomGenerator)));
+    }  
 }
 
 /**
@@ -49,6 +60,8 @@ class EmptyDeckException : public std::exception
  * Other actions such as placing at the bottom of the deck, or placing randomly within the deck, are less common, and
  * I felt did not justify using a different container, such as a list, that are more efficient at inserting or removing
  * elements at positions other than the end.
+ *
+ * T must meet the requirements of MoveAssignable and MoveConstructible
  */
 template <class T>
 class Deck
@@ -58,8 +71,10 @@ class Deck
         /**
          * @brief Construct Deck with data
          * @param[in] data 
+         * @param[in] randomGenerator Random generator used for shuffling cards
+         * Assumes this generator has been seeded appropriately.
          */
-        Deck(const std::vector<T>& data);
+        Deck(const std::vector<T>& data, const std::mt19937& randomGenerator);
 
         /**
          * @brief Shuffle the deck, randomizing its contents
@@ -72,7 +87,7 @@ class Deck
         bool empty() const;
 
         /**
-         * @brief Returns a card from the top of the deck
+         * @brief Returns a card from the top of the deck, removing it from the deck.
          *
          * Calling this method on an empty deck will throw an EmptyDeckException
          * @return Card at top of deck
@@ -83,20 +98,22 @@ class Deck
     private:
 
         std::vector<T> mData; /**<@brief Deck's data */
+        std::mt19937 mRandomGen; /**<@brief Use for shuffling */
 
 };
 
 // Definition below
 
 template<class T>
-Deck<T>::Deck(const std::vector<T>& data) : mData(data)
+Deck<T>::Deck(const std::vector<T>& data, const std::mt19937& randomGenerator) :
+    mData(data), mRandomGen(randomGenerator)
 {
 }
 
 template<class T>
 void Deck<T>::shuffle()
 {
-    knuthShuffle(mData);
+    knuthShuffle<T>(mData, mRandomGen);
 }
 
 template<class T>
@@ -111,7 +128,11 @@ T Deck<T>::deal_card()
     if (mData.empty())
         throw EmptyDeckException();
     else
-        return mData.back();
+    {
+        const T card = mData.back();
+        mData.pop_back();
+        return card;
+    }
 }
 
 } // namespace doc
