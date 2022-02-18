@@ -9,9 +9,9 @@ Formally: "If a necessary feature has a high astonishment factor, it may be nece
 ### Build Test Scripts
 You can build the included test scripts using cmake. 
 There is a test script for:
-- The Knuth shuffle algorithm
-- Deck class, which shuffles and deals a Deck of PlayingCard objects,
-- WarCardGame class, which runs an automated game of the War card game, written using the Deck and PlayingCard classes.
+- The Knuth shuffle algorithm [link](test/knuth_shuffle_test.cpp)
+- Deck class, which shuffles and deals a Deck of PlayingCard objects [link](test/shuffle_deal_test.cpp)
+- WarCardGame class, which runs an automated game of the War card game, written using the Deck and PlayingCard classes. [link](test/war_card_game_test.cpp)
 ```
 mkdir build
 cd build

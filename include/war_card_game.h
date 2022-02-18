@@ -6,7 +6,7 @@
  * @date 2/18/2022
  *
  * @brief Declare WarCardGame class, that simulates a game of the card game War, with the results
- * printed to the terminal.
+ * printed to standard out.
  *
  */
 
@@ -26,7 +26,7 @@ namespace doc
 /**
  * @class WarCardGame "war_card_game.h" "war_card_game.h"
  * @brief This class simulates a game of the card game War, played with a standard 52 card deck, with the
- * results printed to the terminal.
+ * results printed to standard out.
  *
  * War involves two players, and the goal is to be the first player to win all 52 cards.
  *
@@ -42,7 +42,7 @@ namespace doc
  *  When a player has run out of cards in their deck, they take their 'winnings' pile, shuffle it, and it becomes
  *  their deck to continue play with.
  *
- *  The game ends with one plyaer has won all the cards.
+ *  The game ends when one plyaer has won all the cards.
  */
 class WarCardGame
 {
@@ -56,7 +56,7 @@ class WarCardGame
         /**
          * @brief Construct game with custom assortment of playing cards
          *
-         * @param[in] cards Cards to play game with
+         * @param[in] cards Cards to shuffle and deal to players
          * Must be an even number of cards for a fair game. If an odd number of cards is passed, the 
          * last card is dropped from the game.
          */
@@ -73,7 +73,8 @@ class WarCardGame
         void printScore() const;
 
         /**
-         * @brief Plays the game until there is a winner, printing out the score after each turn
+         * @brief Plays the game until there is a winner, printing out the score after each turn, and the
+         * total number of turns played.
          */
         void autoPlay();
 
@@ -83,11 +84,18 @@ class WarCardGame
          */
         bool gameOver() const;
 
+        /**
+         * @brief Returns the number of turns played so far.
+         * A turn were one or more wars occur counts as one turn
+         * @return Turns played
+         */
+        unsigned long long turnsPlayed() const;
+
     private:
 
         /**
          * @brief Initialize game with cards
-         * @param[in] cards Cards to "deal" out to players
+         * @param[in] cards Cards to shuffle and deal out to players
          */
         void initialize(const std::vector<PlayingCard>& cards);
 
@@ -115,7 +123,7 @@ class WarCardGame
         std::vector<PlayingCard> mP2WinPile; /**<@brief Player Two's win pile, that becomes deck later */
         std::vector<PlayingCard> mP1WarCards; /**<@brief Cards Player 1 has put down for war */
         std::vector<PlayingCard> mP2WarCards; /**<@brief Cards Player 2 has put down for war */
-        int turnCounter = 0;
+        unsigned long long mTurnCounter = 0; /**<@brief Counter for the number of turns played */
 
 };
 
