@@ -19,6 +19,8 @@ cmake ..
 cmake --build .
 ```
 
+## [Explanation of process](explanation.txt)
+
 ## Classes
 
 ### Deck
