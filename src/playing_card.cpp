@@ -1,9 +1,9 @@
-/**
+/*
  * @file playing_card.cpp
  *
  * @author Channing Ko-Madden
  *
- * @date 2/17/2022
+ * @date 2/18/2022
  *
  * @brief Define PlayingCard class, that represents a French-suited playing card of a standard 52-card deck.
  *
@@ -12,6 +12,7 @@
 #include "playing_card.h"
 #include <vector>
 #include <sstream>
+#include <type_traits>
 
 namespace doc
 {
@@ -68,6 +69,12 @@ std::string PlayingCard::toString(const Rank rank)
         default:
             return "";
     }
+}
+
+// static
+int PlayingCard::toInt(const Rank rank)
+{
+    return static_cast<std::underlying_type<Rank>::type>(rank);
 }
 
 PlayingCard::PlayingCard(const Suite suite, const Rank rank) : mSuite(suite), mRank(rank)

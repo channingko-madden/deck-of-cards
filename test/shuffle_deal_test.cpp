@@ -11,15 +11,11 @@
 
 #include "deck.h"
 #include "playing_card.h"
-#include <random>
 #include <iostream>
 
 int main(int argc, char** argv)
 {
-    std::random_device randomSeeder;
-    std::mt19937 mtGen(randomSeeder()); // randomly seed mt19937
-
-    doc::Deck<doc::PlayingCard> standardDeck(doc::buildStandardDeck(), mtGen);
+    doc::Deck<doc::PlayingCard> standardDeck(doc::buildStandardDeck());
     std::cout << "Unshuffled deck dealt out: \n";
     while (!standardDeck.empty())
     {
@@ -28,12 +24,21 @@ int main(int argc, char** argv)
 
 
     std::cout << "Shuffled deck dealt out: \n";
-    standardDeck = doc::Deck<doc::PlayingCard>(doc::buildStandardDeck(), mtGen);
+    standardDeck.assign(doc::buildStandardDeck());
     standardDeck.shuffle();
     while (!standardDeck.empty())
     {
         std::cout << standardDeck.deal_card().str() << "\n";
     }
 
+    std::cout << "Comparing shuffle & deal of two separate, newly created, 52 card decks: \n";
+    doc::Deck<doc::PlayingCard> firstDeck(doc::buildStandardDeck());
+    firstDeck.shuffle();
+    doc::Deck<doc::PlayingCard> secondDeck(doc::buildStandardDeck());
+    secondDeck.shuffle();
+    while (!firstDeck.empty())
+    {
+        std::cout << firstDeck.deal_card().str() << "    " << secondDeck.deal_card().str() << "\n";
+    }
     return 0;
 }
