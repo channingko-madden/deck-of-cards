@@ -35,7 +35,7 @@ void WarCardGame::playTurn()
 {
     if (!gameOver())
     {
-        turnCounter++;
+        mTurnCounter++;
         replenishDecks();
 
         const PlayingCard card1 = mP1Deck.deal_card();
@@ -123,10 +123,10 @@ void WarCardGame::autoPlay()
     {
         playTurn();
         printScore();
-        turnCounter++;
+        mTurnCounter++;
         std::cout << "\n";
     }
-    std::cout << turnCounter<< " turns were played\n";
+    std::cout << mTurnCounter<< " turns were played\n";
 }
 
 
@@ -139,6 +139,11 @@ bool WarCardGame::gameOver() const
     }
     else
         return false;
+}
+
+unsigned long long WarCardGame::turnsPlayed() const
+{
+    return mTurnCounter;
 }
 
 /*
