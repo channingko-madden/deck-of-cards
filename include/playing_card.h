@@ -3,7 +3,7 @@
  *
  * @author Channing Ko-Madden
  *
- * @date 2/17/2022
+ * @date 2/18/2022
  *
  * @brief Declare PlayingCard class, that represents a French-suited playing card of a standard 52-card deck.
  *
@@ -51,6 +51,13 @@ class PlayingCard
          * @return String version of rank 
          */
         static std::string toString(const Rank rank);
+
+        /**
+         * @brief Return the underlying int value for a Rank enum.
+         * Ace is low (Ace == 1)
+         * @return Int value of Rank (Ace low)
+         */
+        static int toInt(const Rank rank);
 
         /**
          * @brief Construct playing card with suite and rank
